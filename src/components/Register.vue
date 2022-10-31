@@ -110,9 +110,10 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
-import axios from "axios";
+// import axios from "axios";
 import { RouteEnum } from "../router/routeEnum";
 import { useToastr } from "./toastr";
+import { APIService } from "../services";
 
 const toastr = useToastr();
 
@@ -167,14 +168,15 @@ export default {
       this.$refs.observer.validate();
       try {
         const payload = {
-          name: this.name,
-          email: this.email,
-          password: this.password,
+          "name": this.name,
+          "email": this.email,
+          "password": this.password,
         };
-        const result = await axios.post(
-          "http://restapi.adequateshop.com/api/authaccount/registration",
-          payload
-        );
+        // const result = await axios.post(
+        //   "http://restapi.adequateshop.com/api/authaccount/registration",
+        //   payload
+        // );
+        const result = await APIService.rawPost("/authaccount/registration", payload);
         if(result.data.code === 1) return toastr.error(result.data.message);
         toastr.success(result.data.message);
         console.log(result);

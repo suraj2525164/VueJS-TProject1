@@ -82,9 +82,10 @@ import {
   ValidationProvider,
   setInteractionMode,
 } from "vee-validate";
-import axios from "axios";
+// import axios from "axios";
 import { RouteEnum } from "../router/routeEnum";
 import { useToastr } from "./toastr";
+import { APIService } from "../services";
 
 const toastr = useToastr();
 
@@ -127,9 +128,9 @@ export default {
   },
   name: "LoginPage",
   data: () => ({
-    email: "",
-    password: "",
-    checkbox: true,
+    "email": "",
+    "password": "",
+    "checkbox": true,
   }),
 
   methods: {
@@ -140,10 +141,11 @@ export default {
           email: this.email,
           password: this.password,
         };
-        const result = await axios.post(
-          "http://restapi.adequateshop.com/api/authaccount/login",
-          payload,
-        );
+        // const result = await axios.post(
+        //   "http://restapi.adequateshop.com/api/authaccount/login",
+        //   payload,
+        // );
+        const result = await APIService.rawPost("/authaccount/login", payload);
         if(result.data.code === 1) return toastr.error(result.data.message);
         toastr.success(result.data.message);
         console.log(result);

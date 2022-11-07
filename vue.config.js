@@ -5,7 +5,7 @@ module.exports = defineConfig({
     'vuetify'
   ],
   devServer: {
-    // proxy: process.env.VUE_APP_API_URL,
-    proxy: 'http://restapi.adequateshop.com/api/',
+    proxy: process.env.VUE_APP_API_URL,
+    // proxy: 'http://restapi.adequateshop.com/api/',
   },
 })

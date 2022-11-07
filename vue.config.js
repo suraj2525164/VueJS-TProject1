@@ -6,6 +6,6 @@ module.exports = defineConfig({
   ],
   devServer: {
     // proxy: process.env.VUE_APP_API_URL,
-    proxy: 'http://restapi.adequateshop.com/api/',
+    proxy: 'https://restapi.adequateshop.com/api/',
   },
 })

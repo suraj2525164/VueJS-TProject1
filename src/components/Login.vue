@@ -37,11 +37,12 @@
                   :counter="12"
                   :error-messages="errors"
                   label="Password"
+                  type="password"
                   required
                 ></v-text-field>
               </validation-provider>
               <!-- Checkbox -->
-              <v-checkbox
+              <!-- <v-checkbox
                 v-model="checkbox"
                 label="Keep me signed in"
                 color="dark"
@@ -49,7 +50,7 @@
                 hide-details
                 style="font-weight: bold"
                 class="mb-5"
-              ></v-checkbox>
+              ></v-checkbox> -->
 
               <v-btn color="primary" depressed elevation="2" type="submit">
                 Login
@@ -141,14 +142,12 @@ export default {
           email: this.email,
           password: this.password,
         };
-        // const result = await axios.post(
-        //   "http://restapi.adequateshop.com/api/authaccount/login",
-        //   payload,
-        // );
         const result = await APIService.rawPost("/authaccount/login", payload);
-        if(result.data.code === 1) return toastr.error(result.data.message);
-        toastr.success(result.data.message);
         console.log(result);
+        if(result.data.code === 1) return toastr.error(result.data.message);
+        
+        localStorage.setItem("user", JSON.stringify(result.data.data))
+        toastr.success(result.data.message);
         this.$router.push(RouteEnum.HOME);
       } catch (err) {
         console.log(err);

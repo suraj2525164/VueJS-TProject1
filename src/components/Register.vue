@@ -44,7 +44,7 @@
               <validation-provider
                 v-slot="{ errors }"
                 name="Password"
-                rules="required|min:4|max:12"
+                rules="required|min:6|max:12"
               >
                 <v-text-field
                   v-model="password"
@@ -52,24 +52,26 @@
                   :error-messages="errors"
                   label="Password"
                   required
+                  type="password"
                 ></v-text-field>
               </validation-provider>
               <!-- Confirm Password -->
               <validation-provider
                 v-slot="{ errors }"
-                name="Confirm Password"
-                rules="required|min:4|max:12"
+                name="ConfirmPassword"
+                rules="required|min:6"
               >
                 <v-text-field
                   v-model="confirmPassword"
                   :counter="12"
                   :error-messages="errors"
-                  label="Confirm Password"
+                  label="ConfirmPassword"
+                  type="password"
                   required
                 ></v-text-field>
               </validation-provider>
               <!-- Checkbox -->
-              <v-checkbox
+              <!-- <v-checkbox
                 v-model="checkbox"
                 label="Keep me signed in"
                 color="dark"
@@ -77,7 +79,7 @@
                 hide-details
                 style="font-weight: bold"
                 class="mb-5"
-              ></v-checkbox>
+              ></v-checkbox> -->
 
               <v-btn color="primary" depressed elevation="2" type="submit">
                 Register
@@ -168,19 +170,26 @@ export default {
       this.$refs.observer.validate();
       try {
         const payload = {
-          "name": this.name,
-          "email": this.email,
-          "password": this.password,
+          name: this.name,
+          email: this.email,
+          password: this.password,
         };
         // const result = await axios.post(
         //   "http://restapi.adequateshop.com/api/authaccount/registration",
         //   payload
         // );
-        const result = await APIService.rawPost("/authaccount/registration", payload);
-        if(result.data.code === 1) return toastr.error(result.data.message);
-        toastr.success(result.data.message);
-        console.log(result);
-        this.$router.push(RouteEnum.LOGIN);
+        if (this.password === this.confirmPassword) {
+          const result = await APIService.rawPost(
+            "/authaccount/registration",
+            payload
+          );
+          if (result.data.code === 1) return toastr.error(result.data.message);
+          toastr.success(result.data.message);
+          console.log(result);
+          this.$router.push(RouteEnum.LOGIN);
+        } else {
+          return toastr.error("Password does not match");
+        }
       } catch (err) {
         console.log(err);
       }
